@@ -1,7 +1,8 @@
 let myLibrary = [];
 const bookAddingContainer = document.querySelector("#book-adding-container");
 const bookAddingBtn = document.querySelector("#book-adding-btn");
-
+const notRead = "Not Read Yet"
+const readCompletely = "Read Completely"
 // let title = document.querySelector("#title").value;
 // let author = document.querySelector("#author").value
 // let pages = document.querySelector("#pages").value
@@ -10,7 +11,7 @@ function Book(title, author, pages,readingStatus) {
   this.title = document.querySelector("#title").value;
   this.author = document.querySelector("#author").value;
   this.pages = document.querySelector("#pages").value;
-  this.readingStatus = document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not Read Yet"
+  this.readingStatus = document.querySelector("#flexCheckDefault").checked ? readCompletely : notRead
   // this.info = function () {
   //   return `The ${title} by ${author}, ${pages} pages`;
   // };
@@ -21,7 +22,7 @@ function Book(title, author, pages,readingStatus) {
   
   bookAddingBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const myBooks  = new Book(title, author, pages, document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not Read Yet");
+    const myBooks  = new Book(title, author, pages, document.querySelector("#flexCheckDefault").checked ? readCompletely : notRead);
     if(document.querySelector("#title").value !== "" && document.querySelector("#author").value !== "" && document.querySelector("#pages").value !== ""){
       myLibrary.push(myBooks);
       resetForm();
@@ -42,14 +43,16 @@ function displayBooks(){
    bookAuthor = myLibrary[i].author;
    bookPages= myLibrary[i].pages;
    bookReadingStatus = myLibrary[i].readingStatus
-   if(bookReadingStatus==="Not Read Yet"){
+   if(bookReadingStatus===notRead){
      btnClass = "btn-primary"
     }else{
       btnClass = "btn-success"
    }
   }
+  
   const newBookDiv = document.createElement("div")
   newBookDiv.classList.add("card")
+  newBookDiv.classList.add("m-4")
   newBookDiv.classList.add("col")
   newBookDiv.classList.add("bg-info-subtle")
  const newBookDivInnerHtml = `
@@ -60,7 +63,7 @@ function displayBooks(){
         <hr>
         <p class="book-pages">Pages: ${bookPages}</p>
         <hr>
-        <a href="#" class="btn ${btnClass} book-reading-status">${bookReadingStatus}</a>
+        <a href="#" class="btn btn-reading-status ${btnClass}">${bookReadingStatus}</a>
         <a href="#" class="btn btn-danger">Delete</a>
       </div>
   `;
@@ -68,22 +71,20 @@ function displayBooks(){
   bookAddingContainer.append(newBookDiv);
 }
 
-
-
-
-const bookReadingStatus =  document.querySelector(".book-reading-status");
-bookReadingStatus.addEventListener("click",()=>{
-  if(bookReadingStatus.textContent === "Not Read Yet"){
-    bookReadingStatus.textContent = "Reading Completed";
-    bookReadingStatus.classList.remove("btn-primary");
-    bookReadingStatus.classList.add("btn-success");
-}
-else{
-  bookReadingStatus.textContent = "Not Read Yet";
-  bookReadingStatus.classList.remove("btn-success");
-  bookReadingStatus.classList.add("btn-primary");
+bookAddingContainer.addEventListener("click",(e)=>{
+  e.preventDefault()
+ if(e.target.classList.contains("btn-primary")){
+    e.target.classList.remove("btn-primary")
+    e.target.textContent = readCompletely;
+    e.target.classList.add("btn-success")
+  }
+  else if(e.target.classList.contains("btn-success")){
+    e.target.classList.remove("btn-success")
+    e.target.textContent = notRead;
+    e.target.classList.add("btn-primary")
 }
 })
+
 
 const bookRemove = document.querySelector(".btn-danger")
 bookRemove.addEventListener("click",()=>{
