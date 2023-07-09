@@ -1,13 +1,12 @@
 let myLibrary = [];
 
-function Book(title, author, pages,readStatus) {
+function Book(title, author, pages) {
   this.title = document.querySelector("#title").value;
   this.author = document.querySelector("#author").value;
   this.pages = document.querySelector("#pages").value;
-  this.readStatus = document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not read yet";
-  this.info = function () {
-    return `The ${title} by ${author}, ${pages} pages, ${readStatus}`;
-  };
+  // this.info = function () {
+  //   return `The ${title} by ${author}, ${pages} pages`;
+  // };
   // addBookToLibrary(this);
 }
 
@@ -41,14 +40,46 @@ function Book(title, author, pages,readStatus) {
   const bookAddingBtn = document.querySelector("#book-adding-btn");
   bookAddingBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const myBook  = new Book(title, author, pages, document.querySelector("#flexCheckDefault").checked);
-    myLibrary.push(myBook);
-    document.querySelector("#title").value = ""
-    document.querySelector("#author").value = ""
-    document.querySelector("#pages").value = ""
-    document.querySelector("#flexCheckDefault").checked = false;
+    const myBooks  = new Book(title, author, pages);
+    if(document.querySelector("#title").value !== "" && document.querySelector("#author").value !== "" && document.querySelector("#pages").value !== ""){
+      myLibrary.push(myBooks);
+      resetForm();
+    }
   console.log(myBook );
   console.log(myLibrary);
+  for (let i = 0; i < myLibrary.length; i++) {
+     document.querySelector(".book-title").textContent = myLibrary[i].title
+     document.querySelector(".book-author").textContent = `By ${myLibrary[i].author}`
+     document.querySelector(".book-pages").textContent = `Pages: ${myLibrary[i].pages}`
+     document.querySelector(".book-reading-status").textContent = document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not read yet";
+  }
+});
+
+
+function resetForm(){
+  document.querySelector("#title").value = "";
+  document.querySelector("#author").value = "";
+  document.querySelector("#pages").value = "";
+  document.querySelector("#flexCheckDefault").checked = false;
+}
+
+const bookReadingStatus =  document.querySelector(".book-reading-status");
+bookReadingStatus.addEventListener("click",()=>{
+ if(bookReadingStatus.textContent === "Not read yet"){
+  bookReadingStatus.textContent = "Reading Completed";
+  bookReadingStatus.classList.remove("btn-primary");
+  bookReadingStatus.classList.add("btn-success");
+}
+else{
+  bookReadingStatus.textContent = "Not read yet";
+  bookReadingStatus.classList.remove("btn-success");
+  bookReadingStatus.classList.add("btn-primary");
+}
+})
+
+const bookRemove = document.querySelector(".btn-danger")
+bookRemove.addEventListener("click",()=>{
+    
 });
 
 
