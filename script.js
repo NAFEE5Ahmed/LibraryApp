@@ -32,7 +32,6 @@ bookAddingBtn.addEventListener("click", (e) => {
     resetForm();
     displayBooks();
   }
-  console.log(myLibrary);
 });
 
 function displayBooks() {
