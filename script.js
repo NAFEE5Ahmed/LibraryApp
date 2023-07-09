@@ -1,77 +1,85 @@
 let myLibrary = [];
+const bookAddingContainer = document.querySelector("#book-adding-container");
+const bookAddingBtn = document.querySelector("#book-adding-btn");
 
-function Book(title, author, pages) {
+// let title = document.querySelector("#title").value;
+// let author = document.querySelector("#author").value
+// let pages = document.querySelector("#pages").value
+
+function Book(title, author, pages,readingStatus) {
   this.title = document.querySelector("#title").value;
   this.author = document.querySelector("#author").value;
   this.pages = document.querySelector("#pages").value;
+  this.readingStatus = document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not Read Yet"
   // this.info = function () {
   //   return `The ${title} by ${author}, ${pages} pages`;
   // };
   // addBookToLibrary(this);
 }
 
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// const book2 = new Book("Little garden", "Petter Crazy", 643, "not read it");
-// const book3 = new Book("Drum Kingdom", "Lazy Crazy", 233, "not read it");
-// const book4 = new Book("Land of Sand", "Lazy James", 391, "read it");
-// const book5 = new Book("Sun Peak", "Lazy James", 143, "read it");
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// const book1 = new Book("Harry Potter", "Lazy James", 343, "read it");
-// console.log(book1.info());
 
-// function addBookToLibrary(book) {
-//   myLibrary.push(book);
-// }
-
-// function readStatus(){
-  //  //toggle readStatus
-  // }
   
-  // console.log(myLibrary);
-  // console.log(myLibrary[0].title)
-  // console.log(myLibrary[1].title)
-  // console.log(myLibrary[2].title)
-  // console.log(myLibrary[3].title)
-  // console.log(myLibrary[4].title)
-  
-  const bookAddingBtn = document.querySelector("#book-adding-btn");
   bookAddingBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const myBooks  = new Book(title, author, pages);
+    const myBooks  = new Book(title, author, pages, document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not Read Yet");
     if(document.querySelector("#title").value !== "" && document.querySelector("#author").value !== "" && document.querySelector("#pages").value !== ""){
       myLibrary.push(myBooks);
       resetForm();
+      displayBooks()
     }
-  console.log(myBook );
   console.log(myLibrary);
+    });
+    
+    
+function displayBooks(){
+  let bookTitle;
+  let bookAuthor;
+  let bookPages;
+  let bookReadingStatus;
+  let btnClass;
   for (let i = 0; i < myLibrary.length; i++) {
-     document.querySelector(".book-title").textContent = myLibrary[i].title
-     document.querySelector(".book-author").textContent = `By ${myLibrary[i].author}`
-     document.querySelector(".book-pages").textContent = `Pages: ${myLibrary[i].pages}`
-     document.querySelector(".book-reading-status").textContent = document.querySelector("#flexCheckDefault").checked ? "Reading Completed" : "Not read yet";
+   bookTitle = myLibrary[i].title;
+   bookAuthor = myLibrary[i].author;
+   bookPages= myLibrary[i].pages;
+   bookReadingStatus = myLibrary[i].readingStatus
+   if(bookReadingStatus==="Not Read Yet"){
+     btnClass = "btn-primary"
+    }else{
+      btnClass = "btn-success"
+   }
   }
-});
-
-
-function resetForm(){
-  document.querySelector("#title").value = "";
-  document.querySelector("#author").value = "";
-  document.querySelector("#pages").value = "";
-  document.querySelector("#flexCheckDefault").checked = false;
+  const newBookDiv = document.createElement("div")
+  newBookDiv.classList.add("card")
+  newBookDiv.classList.add("col")
+  newBookDiv.classList.add("bg-info-subtle")
+ const newBookDivInnerHtml = `
+  <div class="card-body">
+        <h2 class="book-title fs-4 fw-bolder">${bookTitle}</h2>
+        <hr>
+        <h2 class="book-author fs-5">By ${bookAuthor}</h2>
+        <hr>
+        <p class="book-pages">Pages: ${bookPages}</p>
+        <hr>
+        <a href="#" class="btn ${btnClass} book-reading-status">${bookReadingStatus}</a>
+        <a href="#" class="btn btn-danger">Delete</a>
+      </div>
+  `;
+  newBookDiv.innerHTML = newBookDivInnerHtml;
+  bookAddingContainer.append(newBookDiv);
 }
+
+
+
 
 const bookReadingStatus =  document.querySelector(".book-reading-status");
 bookReadingStatus.addEventListener("click",()=>{
- if(bookReadingStatus.textContent === "Not read yet"){
-  bookReadingStatus.textContent = "Reading Completed";
-  bookReadingStatus.classList.remove("btn-primary");
-  bookReadingStatus.classList.add("btn-success");
+  if(bookReadingStatus.textContent === "Not Read Yet"){
+    bookReadingStatus.textContent = "Reading Completed";
+    bookReadingStatus.classList.remove("btn-primary");
+    bookReadingStatus.classList.add("btn-success");
 }
 else{
-  bookReadingStatus.textContent = "Not read yet";
+  bookReadingStatus.textContent = "Not Read Yet";
   bookReadingStatus.classList.remove("btn-success");
   bookReadingStatus.classList.add("btn-primary");
 }
@@ -79,12 +87,12 @@ else{
 
 const bookRemove = document.querySelector(".btn-danger")
 bookRemove.addEventListener("click",()=>{
-    
+  
 });
 
-
-// let name = "Harry";
-// let age = 34;
-// let status = "student";
-// let gender =  "male";
-// console.log({name, age, status, gender})
+function resetForm(){
+  document.querySelector("#title").value = "";
+  document.querySelector("#author").value = "";
+  document.querySelector("#pages").value = "";
+  document.querySelector("#flexCheckDefault").checked = false;
+}
